@@ -12,7 +12,6 @@ RSpec.describe UserStock, type: :model do
   # Validation test
   describe "validations" do
     it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:category) }
-    it { should validate_attachment_size(:image).less_than(2.megabytes) }
+    # it { should validate_attachment_size(:image).less_than(2.megabytes) }
   end
 end
