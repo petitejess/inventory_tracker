@@ -9,7 +9,7 @@
     <%= f.association :category %>
     <%= f.association :user %>
 
-    <%= f.simple_fields_for :batchers do |b| %>
+    <%= f.simple_fields_for :batches do |b| %>
       <%= b.input :expiry %>
       <%= b.input :quantity %>
     <% end %>

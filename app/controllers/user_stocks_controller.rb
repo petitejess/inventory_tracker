@@ -4,6 +4,37 @@ class UserStocksController < ApplicationController
   # GET /user_stocks or /user_stocks.json
   def index
     @user_stocks = UserStock.all
+    @categories = Category.all
+
+    # Sort
+    case params[:sort_list_by]
+    when "Exp Date (Earliest)"
+      @user_stocks = UserStock.includes(:batches).order("batches.expiry ASC")
+    when "Exp Date (Latest)"
+      @user_stocks = UserStock.includes(:batches).order("batches.expiry DESC")
+    when "Qty (Least)"
+      @user_stocks = UserStock.includes(:batches).order("batches.quantity ASC")
+    when "Qty (Most)"
+      @user_stocks = UserStock.includes(:batches).order("batches.quantity DESC")
+    when "Stock Name (A-Z)"
+      @user_stocks = UserStock.order("name ASC")
+    when "Stock Name (Z-A)"
+      @user_stocks = UserStock.order("name DESC")
+    when "Category Name (A-Z)"
+      @user_stocks = UserStock.includes(:category).order("categories.name ASC")
+    when "Category Name (Z-A)"
+      @user_stocks = UserStock.includes(:category).order("categories.name DESC")
+    end
+
+    # Filter
+    @categories_filter = []
+    @user_stocks.each do |stock|
+      @categories_filter << stock.category.name
+    end
+    @categories_filter.uniq!
+
+    params[:filter_by]
+
   end
 
   # GET /user_stocks/1 or /user_stocks/1.json
@@ -65,6 +96,6 @@ class UserStocksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_stock_params
-      params.require(:user_stock).permit(:name, :image, :category_id, :user_id)
+      params.require(:user_stock).permit(:name, :image, :category_id, :user_id, batches_attributes: [:expiry, :quantity])
     end
 end

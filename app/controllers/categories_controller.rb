@@ -4,6 +4,13 @@ class CategoriesController < ApplicationController
   # GET /categories or /categories.json
   def index
     @categories = Category.all
+
+    # Sort
+    if params[:sort_list_by] == "Name (A-Z)"
+      @categories = Category.order("name ASC")
+    elsif params[:sort_list_by] == "Name (Z-A)"
+      @categories = Category.order("name DESC")
+    end
   end
 
   # GET /categories/1 or /categories/1.json
