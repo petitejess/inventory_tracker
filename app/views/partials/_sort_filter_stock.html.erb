@@ -1,0 +1,10 @@
+<%= form_with(url: user_stocks_path(@user_stocks), method: :get, local: true) do |form| %>
+  <%= form.select :sort_list_by, ["Exp Date (Earliest)", "Exp Date (Latest)", "Qty (Least)", "Qty (Most)", "Stock Name (A-Z)", "Stock Name (Z-A)", "Category Name (A-Z)", "Category Name (Z-A)"] %>
+  <%= form.submit "Sort" %>
+
+  <% categories_filter.each do |category| %>
+    <%= check_box_tag 'filter_by', category %>
+    <%= category %>
+  <% end %>
+  <%= form.submit "Filter" %>
+<% end%>
