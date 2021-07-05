@@ -1,6 +1,6 @@
-<p id="notice"><%= notice %></p>
+<% content_for(:html_title) { 'All Stocks' } %>
 
-<h1>User Stocks</h1>
+<p id="notice"><%= notice %></p>
 
 <%= render 'partials/sort_filter_stock', categories_filter: @categories_filter %>
 

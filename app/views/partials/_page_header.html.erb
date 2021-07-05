@@ -1,0 +1,8 @@
+<header>
+  <!-- Main Navigation -->
+  <%= render 'partials/main_nav' %>
+
+  <h1>
+    <%= content_for?(:html_title) ? yield(:html_title) : "Default" %>
+  </h1>
+</header>
