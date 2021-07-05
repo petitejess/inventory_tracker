@@ -6,35 +6,17 @@ class UserStocksController < ApplicationController
     @user_stocks = UserStock.all
     @categories = Category.all
 
-    # Sort
-    case params[:sort_list_by]
-    when "Exp Date (Earliest)"
-      @user_stocks = UserStock.includes(:batches).order("batches.expiry ASC")
-    when "Exp Date (Latest)"
-      @user_stocks = UserStock.includes(:batches).order("batches.expiry DESC")
-    when "Qty (Least)"
-      @user_stocks = UserStock.includes(:batches).order("batches.quantity ASC")
-    when "Qty (Most)"
-      @user_stocks = UserStock.includes(:batches).order("batches.quantity DESC")
-    when "Stock Name (A-Z)"
-      @user_stocks = UserStock.order("name ASC")
-    when "Stock Name (Z-A)"
-      @user_stocks = UserStock.order("name DESC")
-    when "Category Name (A-Z)"
-      @user_stocks = UserStock.includes(:category).order("categories.name ASC")
-    when "Category Name (Z-A)"
-      @user_stocks = UserStock.includes(:category).order("categories.name DESC")
-    end
+    # Initialise sort and filter
+    session[:sort_list_by] = params[:sort_list_by]
+    session[:filter_by] = params[:filter_by]
 
-    # Filter
-    @categories_filter = []
-    @user_stocks.each do |stock|
-      @categories_filter << stock.category.name
-    end
-    @categories_filter.uniq!
+    # TO DO
+    # make checkbox persistent in front end based onb filter by session
+    # make sort n filter works together doesnt matter the order of execution
 
-    params[:filter_by]
 
+    sort_list_by
+    filter_by
   end
 
   # GET /user_stocks/1 or /user_stocks/1.json
@@ -89,6 +71,46 @@ class UserStocksController < ApplicationController
   end
 
   private
+    # Sort
+    def sort_list_by
+      case session[:sort_list_by]
+      when "Exp Date (Earliest)"
+        @user_stocks = UserStock.includes(:batches).order("batches.expiry ASC")
+      when "Exp Date (Latest)"
+        @user_stocks = UserStock.includes(:batches).order("batches.expiry DESC")
+      when "Qty (Least)"
+        @user_stocks = UserStock.includes(:batches).order("batches.quantity ASC")
+      when "Qty (Most)"
+        @user_stocks = UserStock.includes(:batches).order("batches.quantity DESC")
+      when "Stock Name (A-Z)"
+        @user_stocks = UserStock.order("name ASC")
+      when "Stock Name (Z-A)"
+        @user_stocks = UserStock.order("name DESC")
+      when "Category Name (A-Z)"
+        @user_stocks = UserStock.includes(:category).order("categories.name ASC")
+      when "Category Name (Z-A)"
+        @user_stocks = UserStock.includes(:category).order("categories.name DESC")
+      end
+    end
+    
+    # Filter
+    def filter_by
+      # Only check cats that have user_stock(s)
+      @categories_filter = []
+      @user_stocks.each do |stock|
+        @categories_filter << stock.category.name
+      end
+      @categories_filter.uniq!
+
+      if session[:filter_by] == nil
+        filter_by = @categories_filter
+      else
+        filter_by = session[:filter_by]
+      end
+
+      @user_stocks = UserStock.includes(:category).where("categories.name" => filter_by)
+    end
+    
     # Use callbacks to share common setup or constraints between actions.
     def set_user_stock
       @user_stock = UserStock.find(params[:id])
