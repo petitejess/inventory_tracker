@@ -7,7 +7,6 @@
     <%= f.input :name %>
     <%= f.file_field :image %>
     <%= f.association :category %>
-    <%= f.association :user %>
 
     <%= f.simple_fields_for :batches do |b| %>
       <%= b.input :expiry %>

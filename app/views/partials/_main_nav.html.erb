@@ -17,6 +17,9 @@
             <%= link_to "View All Stock", user_stocks_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
+            <%= link_to 'Edit profile', edit_user_registration_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
             <%= link_to "Log Out", destroy_user_session_path, class: "nav-link", method: :delete %>
           </li>
         <% else %>

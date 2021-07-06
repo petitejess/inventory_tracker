@@ -16,7 +16,7 @@
 @import "partials/variables";
 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 header {
@@ -52,6 +52,10 @@ header::before {
   background-color: $black-color;
   opacity: .4;
   height: 10em;
+}
+
+main {
+  min-height: 75vh;
 }
 
 footer {
