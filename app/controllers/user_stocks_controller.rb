@@ -3,8 +3,11 @@ class UserStocksController < ApplicationController
 
   # GET /user_stocks or /user_stocks.json
   def index
-    @user_stocks = UserStock.all
-    @categories = Category.all
+    # @user_stocks = UserStock.all
+    @user_stocks = UserStock.includes(:user).where("user" => current_user)
+    
+    # @categories = Category.all
+    @categories = Category.includes(:user_stocks).where("user_stocks.user_id" => current_user.id)
 
     sort_filter
   end
@@ -26,6 +29,7 @@ class UserStocksController < ApplicationController
   # POST /user_stocks or /user_stocks.json
   def create
     @user_stock = UserStock.new(user_stock_params)
+    @user_stock.user_id = current_user.id
 
     respond_to do |format|
       if @user_stock.save
@@ -83,7 +87,7 @@ class UserStocksController < ApplicationController
         filter_by = session[:filter_by]
       end
 
-      @user_stocks = UserStock.includes(:category).where("categories.name" => filter_by)
+      @user_stocks = @user_stocks.includes(:category).where("categories.name" => filter_by)
 
       # Sort
       session[:sort_by] = params[:sort_by]
@@ -109,7 +113,7 @@ class UserStocksController < ApplicationController
     
     # Use callbacks to share common setup or constraints between actions.
     def set_user_stock
-      @user_stock = UserStock.find(params[:id])
+      @user_stock = UserStock.includes(:user).where("user" => current_user).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

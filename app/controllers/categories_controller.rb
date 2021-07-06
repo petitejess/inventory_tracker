@@ -3,13 +3,13 @@ class CategoriesController < ApplicationController
 
   # GET /categories or /categories.json
   def index
-    @categories = Category.all
+    @categories = Category.includes(:user_stocks).where("user_stocks.user_id" => current_user.id)
 
     # Sort
     if params[:sort_list_by] == "Name (A-Z)"
-      @categories = Category.order("name ASC")
+      @categories = @categories.order("name ASC")
     elsif params[:sort_list_by] == "Name (Z-A)"
-      @categories = Category.order("name DESC")
+      @categories = @categories.order("name DESC")
     end
   end
 
