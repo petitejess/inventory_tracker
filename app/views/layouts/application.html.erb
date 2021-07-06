@@ -13,9 +13,13 @@
   <body>
     <%= render 'partials/page_header' %>
 
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <div class="container">
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+      
+      <%= yield %>
+    </div>
     
-    <%= yield %>
+    <%= render 'partials/footer' %>
   </body>
 </html>

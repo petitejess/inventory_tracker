@@ -16,9 +16,20 @@
  @import "partials/variables";
 
  header {
-   background-image: url(banner_top.jpg);
-   background-color: $black-color;
-   background-size: cover;
-   background-repeat: no-repeat;
-   background-position: center;
+  background-image: url(banner_top.jpg);
+  background-color: $black-color;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+ }
+
+ footer {
+  background-color: $black-color;
+  
+  .cpyrght {
+    color: #fff;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+  }
  }
