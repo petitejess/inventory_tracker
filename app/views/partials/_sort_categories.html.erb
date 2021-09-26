@@ -1,4 +1,0 @@
-<%= form_with(url: categories_path(@categories), method: :get, local: true) do |form| %>
-  <%= form.select :sort_by, ["Name (A-Z)", "Name (Z-A)"] %>
-  <%= form.submit "Sort" %>
-<% end%>
